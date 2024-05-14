@@ -1,0 +1,27 @@
+[output_pin probe_enable]
+pin: PC8 # Change this to the Servo/control pin number for your board.
+value: 0
+
+[gcode_macro Probe_Deploy]
+gcode: SET_PIN PIN=probe_enable VALUE=1
+
+[gcode_macro Probe_Stow]
+gcode: SET_PIN PIN=probe_enable VALUE=0
+
+
+[probe]
+pin: ^!PA8 # Change this to the Probe/Z- pin number for your board
+deactivate_on_each_sample: False
+x_offset: 41.0 # Change the probe offsets to meet your machine requirements.
+y_offset: 2.0
+#z_offset: 0.0
+speed: 10.0
+samples: 1
+sample_retract_dist: 3.0
+samples_tolerance: 0.05
+samples_tolerance_retries: 3
+activate_gcode: 
+  Probe_Deploy 
+  G4 P500 # allow time for probe to deploy
+deactivate_gcode: 
+  Probe_Stow
